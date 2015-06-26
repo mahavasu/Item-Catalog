@@ -5,18 +5,18 @@ udacity Full Stack Web Developer Nanodegree Project 3 - Item Catalog
 
 Files
 
-application.py -- python script with flask main application
-catalog.db -- sqlite database for item catalog
-database_setup.py -- pathon script for sqlalchemy database schema
-addDatabase.py -- python script to polulate database with sample data
-static/styles.css -- css style for all views
-templates/additem.html -- template for item add view
-templates/catalog.html -- template for catalog and category overview
-templates/deleteitem.html -- template for item delete view
-templates/edititem.html -- template for item edit view
-templates/item.html -- template for item view
-templates/header.html -- header for all views
-templates/footer.html -- footer for all views
+1. application.py -- python script with flask main application
+2. catalog.db -- sqlite database for item catalog
+3. database_setup.py -- pathon script for sqlalchemy database schema
+4. addDatabase.py -- python script to polulate database with sample data
+5. static/styles.css -- css style for all views
+6. templates/additem.html -- template for item add view
+7. templates/catalog.html -- template for catalog and category overview
+8. templates/deleteitem.html -- template for item delete view
+9. templates/edititem.html -- template for item edit view
+10. templates/item.html -- template for item view
+11. templates/header.html -- header for all views
+12. templates/footer.html -- footer for all views
 
 
 Requirements
