@@ -1,0 +1,76 @@
+
+#Template to display the details of the catagories and  latest added items also link or the
+
+{% extends "main.html" %}
+{% block content %}
+{% include 'header.html' %}
+        <div class="row top-menu">
+		<div class="col-md-10"></div>
+		<div class="col-md-2 text-right">
+					</div>
+	</div>
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog</h1>
+		</div>
+	</div>
+
+
+	<div class="main">
+		<div class="row padding-top padding-bottom">
+			<div class="col-md-1"></div>
+			<div class="col-md-10 padding-none">
+				<div class="categories">
+				<h2>Categories</h2>
+				<ul>
+					<li><a href="{{url_for('showCatalog')}}">All</a>
+					</li>
+					{% for category in categories %}
+					<li><a href="{{url_for('showCategory', category_name = category.name)}}">{{category.name}}</a>
+					</li>
+					{% endfor %}
+
+
+					{% if category %}
+					<div class="items">
+						<h2>{{category.name}}</h2>
+					<ul>
+				
+				
+						{% for item in items %}
+						<li><a href="{{url_for('showItem', item_id = item.id)}}">{{item.name}}</a>
+						</li>
+						{% endfor %}
+						<h3><a href="{{url_for('addItem',category_name=category.name)}}">Add Item</a></h3>
+				
+					</ul>
+			        </div>
+					{% else %}
+					<div class="items">
+						<h2>Latest Items</h2>
+					<ul>
+						{% for item in items %}
+						<li><a href="{{url_for('showItem', item_id = item.id)}}">{{item.name}} ({{item.category.name}})</a>
+						</li>
+					{% endfor %}
+					</ul>
+					</div>
+					{% endif %}
+				</ul>
+				</div>
+						
+					
+				</a>
+			</div>
+		
+		
+	</div>
+        <div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+{% include 'footer.html' %}
+{% endblock %}
