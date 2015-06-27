@@ -42,3 +42,5 @@ To reset database:
 To start application
 
 python application.py
+
+In Web browser type http://localhost:8000
