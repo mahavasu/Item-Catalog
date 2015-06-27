@@ -1,0 +1,29 @@
+#template to display the items when the particular category is selected
+<html>
+	<div class="item">
+		
+		<h2>{{item.name}}</h2>
+		<p>Created: {{item.created.strftime('%H:%M:%S %d.%m.%Y')}}</p>
+		<p>Owner: {{item.owner.name}}</p>
+		<p>Description: {{item.description}}</p>
+		<p>Category: {{item.category.name}}</p>
+		
+		<p>
+			<a href="{{url_for('editItem',item_id=item.id)}}">
+				<button>Edit</button>
+			</a>
+		</p>
+		<p>
+			<a href="{{url_for('deleteItem',item_id=item.id)}}">
+				<button>Delete</button>
+			</a>
+		</p>
+		
+		<p>
+			<a href="{{url_for('showCategory',category_name=item.category.name)}}">
+				<button class:"jsonbutton">Back</button>
+			</a>
+		</p>
+	</div>
+{% include 'footer.html' %}
+</html>
