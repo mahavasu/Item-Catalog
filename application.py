@@ -138,7 +138,7 @@ def gconnect():
 def gdisconnect():
         # Only disconnect a connected user.
     access_token = login_session.get('credentials.access_token')
-    print access_token
+    
     if access_token is None:
         response = make_response(
             json.dumps('Current user not connected.'), 401)
@@ -147,7 +147,7 @@ def gdisconnect():
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print result
+    
     if result['status'] == '200' or result['status'] == '400':
         # Reset the user's sesson.
         del login_session['credentials.access_token']
@@ -226,19 +226,22 @@ def showCategory(category_name):
 @app.route('/item/<int:item_id>/')
 def showItem(item_id):
 	item = db_session.query(Item).filter_by(id=item_id).one()
+	if 'username' not in login_session:
+	    return redirect('/login')
 	return render_template('item.html', item=item)
 
 
 #Function to add items to the catalog database
 @app.route('/catalog/<string:category_name>/add/', methods=['GET', 'POST'])
 def addItem(category_name):
-	categories = db_session.query(Category).all()
-	category = db_session.query(Category).filter_by(name=category_name).one()
 	
 	# check if user is connected
         if 'username' not in login_session:
 	    return redirect('/login')
 	user = login_session['username']
+	
+	categories = db_session.query(Category).all()
+	category = db_session.query(Category).filter_by(name=category_name).one()
 	
 	if request.method == 'POST':
 		# check if an item name was entered
@@ -264,12 +267,15 @@ def addItem(category_name):
 #Function to edit a item
 @app.route('/item/<int:item_id>/edit/', methods=['GET', 'POST'])
 def editItem(item_id):
-	item = db_session.query(Item).filter_by(id = item_id).one()
-
+	
+	
 	# check if user is connected
         if 'username' not in login_session:
 	    return redirect('/login')
 
+	item = db_session.query(Item).filter_by(id = item_id).one()
+	if item.owner_id != login_session['user_id']:
+	    return "<script>function myFunction() {alert('You are not authorized to edit this item. Please create your own item in order to edit.');}</script><body onload='myFunction()''>"
 	if request.method == 'POST':
 		# check if an item name was entered
 		if request.form['name'] != "":
@@ -296,13 +302,14 @@ def editItem(item_id):
 #Function to delete an item
 @app.route('/item/<int:item_id>/delete/', methods = ['GET', 'POST'])
 def deleteItem(item_id):
-	item = db_session.query(Item).filter_by(id = item_id).one()
-	category = item.category
-
 	# check if user is connected
 	if 'username' not in login_session:
 	    return redirect('/login')
-
+	item = db_session.query(Item).filter_by(id = item_id).one()
+	category = item.category
+	if item.owner_id != login_session['user_id']:
+	    return "<script>function myFunction() {alert('You are not authorized to delete this item. Please create your own item in order to delete.');}</script><body onload='myFunction()''>"
+	
 	if request.method == 'POST':
 		flash("Item " + item.name + " deleted")
 		db_session.delete(item)
